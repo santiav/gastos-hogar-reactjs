@@ -1,12 +1,6 @@
-import express from 'express'
 
-const app = express()
-const port = 3000
+import app from "./app.js";
+import { PORT } from "../config/config.js";
 
-app.get('/', (req, res) => {
-   res.send('¡Hola mundo!')
-})
-
-app.listen(port, () => {
-   console.log(`Servidor ONLINE - puerto: ${port}`)
-})
+app.listen(PORT);
+console.log(`Servidor ONLINE en puerto: ${PORT}`);
