@@ -1,9 +1,7 @@
 import axios from "axios";
 
 let port = 3000
-let url = "https://gorgeous-boa-gaiters.cyclic.app" || `http://localhost:${port}`
-
-// Funciones que llaman a las rutas establecidas en server.js
+let url = `http://localhost:${port}`
 
 export const getUsuarios = async () => {
    try {
