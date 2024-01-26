@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from "react"
+import { getUsuarios } from "../api/calls.js"
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+
+   useEffect(() => {
+      // Check users at DB
+      const fetchData = async () => {
+         const data = await getUsuarios();
+         console.log(data)
+      }
+      fetchData()
+   },[])
+
+
+   return (
+      <div className="flex items-center h-screen">
+
+         <form action="/" method="post" className="container p-4">
+
+            <label htmlFor="usuario" className="form-label mb-10 text-5xl text-center block">Usuario</label>
+            <select name="usuario" id="usuario" className="form-campo mb-10 text-4xl">
+               <option value="" defaultValue="Seleccionar" disabled>---- Seleccionar ----</option>
+               <option value="santi">santi</option>
+               <option value="syl">syl</option>
+            </select>
+
+            <input type="submit" value="Entrar" className="btn-primary-inverse w-full" />
+         </form>
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+   )
 }
 
 export default App
