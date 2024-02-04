@@ -1,35 +1,45 @@
-import { useEffect } from "react"
-import { getUsuarios } from "../api/calls.js"
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { AuthContext } from "./context/AuthContext";
+// Pages
+import Login from './pages/Login'
+import VerGastos from './pages/VerGastos'
+import Error404 from './pages/Error404'
+// Components
+import Layout from "./components/Layout";
+
 
 function App() {
 
+   const [usuario, setUsuario] = useState(null);
+
+   const logout = () => {
+      // Perform logout actions (e.g., clear tokens, redirect)
+      setUsuario(null);
+   };
 
    useEffect(() => {
-      // Check users at DB
-      const fetchData = async () => {
-         const data = await getUsuarios();
-         console.log(data)
+      // Check for existing login state (e.g., from local storage)
+      const storedUser = localStorage.getItem('usuario');
+      console.log("storedUser -->  ", storedUser)
+      if (storedUser) {
+         setUsuario(storedUser);
       }
-      fetchData()
-   },[])
-
+   }, []);
 
    return (
-      <div className="flex items-center h-screen">
 
-         <form action="/" method="post" className="container p-4">
-
-            <label htmlFor="usuario" className="form-label mb-10 text-5xl text-center block">Usuario</label>
-            <select name="usuario" id="usuario" className="form-campo mb-10 text-4xl">
-               <option value="" defaultValue="Seleccionar" disabled>---- Seleccionar ----</option>
-               <option value="santi">santi</option>
-               <option value="syl">syl</option>
-            </select>
-
-            <input type="submit" value="Entrar" className="btn-primary-inverse w-full" />
-         </form>
-
-      </div>
+      <AuthContext.Provider value={{ usuario, setUsuario, logout }}>
+         <BrowserRouter>
+            <Routes>
+               <Route index element={<Login />} />
+               <Route element={<Layout />}>
+                  <Route path="/gastos/ver/:usuario" element={<VerGastos />} />
+               </Route>
+               <Route path="*" element={<Error404 />} />
+            </Routes>
+         </BrowserRouter>
+      </AuthContext.Provider>
    )
 }
 
