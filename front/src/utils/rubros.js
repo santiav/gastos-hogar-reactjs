@@ -1,0 +1,28 @@
+// Listado de rubros para el <select>
+export default [
+   "Arreglos",
+   "Auto",
+   "Bebe",
+   "Comida",
+   "Educacion",
+   "Entretenimiento",
+   "Estetica",
+   "Expensas",
+   "Farmacia",
+   "Gimnasio",
+   "Hogar",
+   "Impuestos",
+   "Indumentaria",
+   "Limpieza",
+   "Mascota",
+   "Regalos",
+   "Salidas",
+   "Salud",
+   "Shopping",
+   "Suscripciones",
+   "Supermercado",
+   "Tecnología",
+   "Transporte",
+   "Variado",
+   "Viaje"
+].sort()

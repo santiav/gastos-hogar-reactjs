@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { AuthContext } from "./context/AuthContext";
 // Pages
 import Login from './pages/Login'
-import VerGastos from './pages/VerGastos'
+import VerGastosContainer from './pages/VerGastosContainer'
 import Error404 from './pages/Error404'
 // Components
 import Layout from "./components/Layout";
@@ -21,7 +21,6 @@ function App() {
    useEffect(() => {
       // Check for existing login state (e.g., from local storage)
       const storedUser = localStorage.getItem('usuario');
-      console.log("storedUser -->  ", storedUser)
       if (storedUser) {
          setUsuario(storedUser);
       }
@@ -34,7 +33,7 @@ function App() {
             <Routes>
                <Route index element={<Login />} />
                <Route element={<Layout />}>
-                  <Route path="/gastos/ver/:usuario" element={<VerGastos />} />
+                  <Route path="/gastos/ver/:usuario" element={<VerGastosContainer />} />
                </Route>
                <Route path="*" element={<Error404 />} />
             </Routes>

@@ -1,14 +1,12 @@
-import { useContext } from 'react';
-import { AuthContext } from "../context/AuthContext.js";
 import { Navigate } from "react-router-dom";
-
-export default function VerGastos() {
-
-   let { usuario } = useContext(AuthContext);
-   console.log(usuario)
+import Filtros from "../components/Filtros";
 
 
-   
+export default function VerGastos(props) {
+
+   const { usuario } = props
+   const mensaje = ''
+   const totalGastado = 1
 
    return (
 
@@ -19,7 +17,16 @@ export default function VerGastos() {
                /* Si ya hay usuario, ir a ver gastos */ 
                <Navigate to={`/`} />
             :
-               <h1>Estás en ver gastos {usuario}</h1>
+               <main className="bg-white pb-14">
+                  {mensaje && <p class="leading-4 bg-green-300 p-5  text-black text-xl font-bold text-center animate-fadeOut"> {mensaje} </p> }
+
+                  <Filtros />
+
+                  <strong className="text-5xl text-center  block">
+                     {totalGastado != null ? new Intl.NumberFormat('es-AR', { roundingMode: 'trunc', style: 'currency', currency: 'ARS', roundingPriority: "morePrecision" }).format(totalGastado) : "$ 0" }
+                  </strong>
+
+               </main>
          }
          
       </div>
