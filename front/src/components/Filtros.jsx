@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 import { AuthContext } from "../context/AuthContext.js";
 import rubros from '../utils/rubros';
@@ -12,9 +13,9 @@ export default function Filtros() {
 
    const { register, handleSubmit, setValue } = useForm(); // react-hook-form
    const navigate = useNavigate(); // para redireccionar
+   const location = useLocation();
 
    const [filtros, setFiltros] = useState({}); // objeto con filtros aplicados
-
 
    const handleFilters = (data) => {
       // Filtra solo los valores truthy del objeto original
@@ -51,6 +52,22 @@ export default function Filtros() {
       }
       return null;
    };
+
+// 
+
+   
+   useEffect(() => {
+
+      // Obtener los queries actuales usando useLocation.
+      const search = location.search;
+      const params = new URLSearchParams(search);
+
+      // Obtener un objeto con todos los params
+      const allParams = Object.fromEntries(params);
+
+      setFiltros(allParams)
+   }, [location])
+
 
    return (
       <div className="container mx-auto">
