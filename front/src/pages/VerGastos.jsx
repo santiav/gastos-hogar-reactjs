@@ -1,29 +1,51 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import Loading from "../components/Loading.jsx"
 import TablaGastos from "../components/TablaGastos.jsx";
 import Filtros from "../components/Filtros";
+import { useEffect, useState } from "react";
+// API
+import { verGastos } from "../../api/calls.js"
 
 export default function VerGastos(props) {
 
    const { usuario } = props
-   const mensaje = ''
-   const totalGastado = 1
+
+   const [filtros, setFiltros] = useState({});
+   const [datos, setDatos] = useState({})
+   const [cargando, setCargando] = useState(false); 
+
+   let location = useLocation();
+
+   // ---
+   useEffect(() => {
+
+      // Check accounts at DB
+      const fetchData = async () => {
+         setCargando(true); // Iniciar carga
+         const data = await verGastos(location.search, usuario);
+         setDatos(data);
+         setCargando(false); // Finalizar cargar verGastos
+      }
+      fetchData()
+
+   }, [filtros, location])
+
+   if (!usuario) {
+      return <Navigate to={`/`} />;
+   }
 
    return (
 
       <div className="bg-white pb-14">
          {
-               !usuario 
-            ? 
-               /* Si ya hay usuario, ir a ver gastos */ 
-               <Navigate to={`/`} />
-            :
+            
                <main className="bg-white pb-14">
-                  {mensaje && <p class="leading-4 bg-green-300 p-5  text-black text-xl font-bold text-center animate-fadeOut"> {mensaje} </p> }
+                  {datos.mensaje && <p class="leading-4 bg-green-300 p-5  text-black text-xl font-bold text-center animate-fadeOut"> {mensaje} </p> }
 
-                  <Filtros />
+                  <Filtros onFiltrar={(nuevosFiltros) => setFiltros(nuevosFiltros)} />
 
                   <strong className="text-5xl text-center  block">
-                     {totalGastado != null ? new Intl.NumberFormat('es-AR', { roundingMode: 'trunc', style: 'currency', currency: 'ARS', roundingPriority: "morePrecision" }).format(totalGastado) : "$ 0" }
+                     {datos.totalGastado != null ? new Intl.NumberFormat('es-AR', { roundingMode: 'trunc', style: 'currency', currency: 'ARS', roundingPriority: "morePrecision" }).format(datos.totalGastado) : "$ 0" }
                   </strong>
 
                   {/* Tabla */}
@@ -44,7 +66,7 @@ export default function VerGastos(props) {
                         {/* table-row-group */}                   
 
                        
-                           <TablaGastos usuario={usuario} />
+                     {cargando ? <div className='flex justify-center'><Loading /></div> :  <TablaGastos usuario={usuario} datos={datos} /> }
 
                      </div>
 

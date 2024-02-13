@@ -6,7 +6,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.js";
 import rubros from '../utils/rubros';
 
-export default function Filtros() {
+export default function Filtros(props) {
+
+   // Hooks
+   const [filtros, setFiltros] = useState({}); // objeto con filtros aplicados
+   const [mostrar, setMostrar] = useState(false)
+
+   const { onFiltrar } = props
 
    // recupero el usuario del Contexto
    let { usuario } = useContext(AuthContext);
@@ -15,7 +21,7 @@ export default function Filtros() {
    const navigate = useNavigate(); // para redireccionar
    const location = useLocation();
 
-   const [filtros, setFiltros] = useState({}); // objeto con filtros aplicados
+
 
    const handleFilters = (data) => {
       // Filtra solo los valores truthy del objeto original
@@ -26,6 +32,11 @@ export default function Filtros() {
 
       // Poner los query en la barra de navegación
       navigate(`?${new URLSearchParams(truthyValues).toString()}`);
+
+      // Notificar al componente padre sobre los filtros aplicados
+      onFiltrar(truthyValues);
+
+      setMostrar(false)
    };
 
    // Función para mostrar los filtros aplicados visualmente
@@ -66,16 +77,17 @@ export default function Filtros() {
       const allParams = Object.fromEntries(params);
 
       setFiltros(allParams)
+
    }, [location])
 
 
    return (
       <div className="container mx-auto">
-         <details>
-            <summary>
-               <span className="mb-2 text-2xl text-sky-500">Filtros</span>
-            </summary>
-            <section id="filtros" className="container m-auto md:px-4 px-2 shadow-lg">
+         <aside>
+           
+            <h2 className="mb-2  bg-sky-500 text-white p-2 px-4 cursor-pointer rounded-xl inline-block font-bold" onClick={() => setMostrar(true)}>Filtrar por...</h2>
+
+            <section id="filtros" className={`container m-auto md:px-4 px-2 shadow-lg ${mostrar ? 'block' : 'hidden'}`} >
                <form onSubmit={handleSubmit(handleFilters)}>
 
                   {/* ITEM */}
@@ -203,13 +215,13 @@ export default function Filtros() {
 
                   <div className="flex justify-end mt-3 pb-2">
                      <button type="submit" className="btn-primary-inverse flex-grow mx-1">Aplicar</button>
-                     <a href={`/api/gastos/${usuario}/ver`} className="btn-primary-inverse flex-grow text-center mx-1">Ver todos</a>
+                     <a href={`/gastos/ver/${usuario}`} className="btn-primary-inverse flex-grow text-center mx-1">Ver todos</a>
                   </div>
 
                </form>
 
             </section>
-         </details>
+         </aside>
 
          {renderAppliedFilters()}
       </div>

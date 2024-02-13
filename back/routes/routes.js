@@ -1,19 +1,13 @@
 import { Router } from 'express';
-import pool from "../config/conn.js";
 const router = Router();
+
+import { loginGET, verGastosGET } from '../controllers/gastosCtrl.js';
+
 
 
 // Login
-router.get("/", async (req, res) => {
-   try {
+router.get("/", loginGET)
 
-      const [rows] = await pool.query("SELECT * FROM cuentas");
-      res.send(rows)
-
-   } catch (err) {
-      return res.status(500).json({ message: "Algo salió mal " + err });
-   }
-
-})
+router.get("/gastos/ver/:usuario", verGastosGET)
 
 export default router

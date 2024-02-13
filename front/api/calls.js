@@ -17,3 +17,16 @@ export const getCuentas = async () => {
    }
 }
 
+export const verGastos = async (filtros, usuario) => {
+   try {
+      // Le debo pasar la ruta con los queries para que desde el backend pueda tomarlos con el objeto req.
+      const res = await axios.get(`${url}/api/gastos/ver/${usuario}${filtros}`)
+      return res.data
+   } catch (err) {
+      return {
+         mensaje: "allGastos ERROR!",
+         error: err,
+      };
+   }
+}
+
