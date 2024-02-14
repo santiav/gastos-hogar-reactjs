@@ -12,18 +12,22 @@ export const loginGET = async (req, res) => {
 
 export const verGastosGET = async (req, res) => {
 
+
+
    try {
 
       let filtros = req.query
 
-      filtros.pagina = parseInt(req.query.pagina) || 1,
-      filtros.tamanoPagina = parseInt(req.query.tamanoPagina) || 10
+      filtros.paginaActual = parseInt(req.query.paginaActual) || 1,
+      filtros.tamanoPagina = parseInt(req.query.tamanoPagina) || 5
 
       let usuario = req.params.usuario
 
       const totalGastado = await gastosTotalModel(filtros, usuario)
-
+     
       const { datos, cantidadTotalProductos } = await gastosVerModel(filtros, usuario);
+
+      console.log(datos)
       // Calcula la cantidad total de páginas
       const totalPages = Math.ceil(cantidadTotalProductos / filtros.tamanoPagina)
 
@@ -31,7 +35,7 @@ export const verGastosGET = async (req, res) => {
          datos: datos,
          mensaje: req.query.mensaje || "",
          totalGastado: totalGastado[0]['SUM(importe)'],
-         paginaActual: filtros.pagina, // 1
+         paginaActual: filtros.paginaActual, // 1
          tamanoPagina: filtros.tamanoPagina, // 10
          totalPages,
          cantidadTotalProductos

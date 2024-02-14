@@ -14,7 +14,9 @@ export const loginGETModel = async () => {
 export const gastosVerModel = async (filtros, usuario) => {
 
    try {
+     
       const resultado = usarFiltros(filtros, usuario)
+      console.log("resultado", resultado)
       const [rows] = await pool.query(resultado.query, resultado.values)
       const [countResult] = await pool.query(resultado.count, resultado.values)
 

@@ -83,7 +83,7 @@ export const usarFiltros = (filtros, usuario) => {
    }
 
    // if (filtros.tamanoPagina) {
-   const offset = (filtros.pagina - 1) * filtros.tamanoPagina;
+   const offset = (filtros.paginaActual - 1) * filtros.tamanoPagina;
    consultas.query += ` LIMIT ? OFFSET ?`;
    consultas.values.push(filtros.tamanoPagina, offset);
    // }

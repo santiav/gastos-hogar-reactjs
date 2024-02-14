@@ -56,6 +56,7 @@ export default function Filtros(props) {
                      {filtros.costoMin && <li>Costo mínimo: <span className="pill-1">$ {filtros.costoMin}</span></li>}
                      {filtros.costoMax && <li>Costo máximo: <span className="pill-1">$ {filtros.costoMax}</span></li>}
                      {filtros.orden && <li>Orden: <span className="pill-1">{filtros.orden}</span></li>}
+                     {filtros.paginaActual && <li>Página: <span className="pill-1">{filtros.paginaActual}</span></li>}
                   </ul>
                </div>
             </>
@@ -85,7 +86,7 @@ export default function Filtros(props) {
       <div className="container mx-auto">
          <aside>
            
-            <h2 className="mb-2  bg-sky-500 text-white p-2 px-4 cursor-pointer rounded-xl inline-block font-bold" onClick={() => setMostrar(true)}>Filtrar por...</h2>
+            <h2 className="mb-2  bg-orange-500 text-white p-2 px-4 cursor-pointer rounded-xl inline-block font-bold" onClick={() => setMostrar(true)}>Filtrar por...</h2>
 
             <section id="filtros" className={`container m-auto md:px-4 px-2 shadow-lg ${mostrar ? 'block' : 'hidden'}`} >
                <form onSubmit={handleSubmit(handleFilters)}>

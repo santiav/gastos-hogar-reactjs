@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading.jsx"
 import TablaGastos from "../components/TablaGastos.jsx";
 import Filtros from "../components/Filtros";
@@ -8,6 +8,8 @@ import { verGastos } from "../../api/calls.js"
 
 export default function VerGastos(props) {
 
+
+
    const { usuario } = props
 
    const [filtros, setFiltros] = useState({});
@@ -15,6 +17,17 @@ export default function VerGastos(props) {
    const [cargando, setCargando] = useState(false); 
 
    let location = useLocation();
+   const navigate = useNavigate();
+
+   const cambiarPagina = async (params) => {
+
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set('paginaActual', params);
+      navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+      
+      // const data = await verGastos(location.search, usuario);
+      // setDatos(data);
+   }
 
    // ---
    useEffect(() => {
@@ -22,13 +35,14 @@ export default function VerGastos(props) {
       // Check accounts at DB
       const fetchData = async () => {
          setCargando(true); // Iniciar carga
-         const data = await verGastos(location.search, usuario);
+         const filtros = location.search
+         const data = await verGastos(filtros, usuario);
          setDatos(data);
          setCargando(false); // Finalizar cargar verGastos
       }
       fetchData()
 
-   }, [filtros, location])
+   }, [filtros, location, location.search])
 
    if (!usuario) {
       return <Navigate to={`/`} />;
@@ -66,7 +80,7 @@ export default function VerGastos(props) {
                         {/* table-row-group */}                   
 
                        
-                     {cargando ? <div className='flex justify-center'><Loading /></div> :  <TablaGastos usuario={usuario} datos={datos} /> }
+                     {cargando ? <div className='flex justify-center'><Loading /></div> : <TablaGastos usuario={usuario} datos={datos} onCambiarPagina={(paginaParams) => cambiarPagina(paginaParams)} /> }
 
                      </div>
 
