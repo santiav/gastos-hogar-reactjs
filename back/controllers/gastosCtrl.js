@@ -1,4 +1,5 @@
-import { loginGETModel, gastosTotalModel, gastosVerModel } from "../model/gastosModel.js";
+import { loginGETModel, gastosTotalModel, gastosVerModel, gastosEditarGET_IDModel,
+   gastosEditarPUT_IDModel} from "../model/gastosModel.js";
 
 
 export const loginGET = async (req, res) => {
@@ -18,8 +19,9 @@ export const verGastosGET = async (req, res) => {
 
       let filtros = req.query
 
+      // Parámetros de paginación
       filtros.paginaActual = parseInt(req.query.paginaActual) || 1,
-      filtros.tamanoPagina = parseInt(req.query.tamanoPagina) || 5
+      filtros.tamanoPagina = parseInt(req.query.tamanoPagina) || 10
 
       let usuario = req.params.usuario
 
@@ -27,7 +29,7 @@ export const verGastosGET = async (req, res) => {
      
       const { datos, cantidadTotalProductos } = await gastosVerModel(filtros, usuario);
 
-      console.log(datos)
+
       // Calcula la cantidad total de páginas
       const totalPages = Math.ceil(cantidadTotalProductos / filtros.tamanoPagina)
 
@@ -50,3 +52,36 @@ export const verGastosGET = async (req, res) => {
    }
 
 } 
+
+// Ver gasto detallado (sirve para editar) - VISTA
+export const gastosEditarGET_ID = async (req, res) => {
+
+   try {
+      let id = req.params.id
+
+      const gasto = await gastosEditarGET_IDModel(id);
+      res.send(gasto)
+
+   } catch (error) {
+      // return res.status(500).json({ message: "Algo salió mal: " + error })
+      throw new Error(error)
+   }
+}
+
+// Editar un gasto (POST)
+export const gastosEditarPUT_ID = async (req, res) => {
+
+   try {
+      const id = req.params.id
+      const data = req.body
+      console.log("id -->", id)
+      console.log("data -->", data)
+
+      await gastosEditarPUT_IDModel(data, id)
+      console.info("gasto actualizado!" + id)
+      res.redirect("http://localhost:5173");
+   } catch (error) {
+      console.error('Error updating MySQL:', error);
+      throw error;
+   }
+}

@@ -17,6 +17,8 @@ export const getCuentas = async () => {
    }
 }
 
+
+// Ver los gastos
 export const verGastos = async (filtros, usuario) => {
 
    
@@ -32,3 +34,28 @@ export const verGastos = async (filtros, usuario) => {
    }
 }
 
+// Ver UN gasto
+export const editarGastoGET = async (id) => {
+   try {
+      const res = await axios.get(`${url}/api/gastos/editar/${id}`)
+      return res.data
+   } catch (err) {
+      return {
+         mensaje: "editarGasto ERROR!",
+         error: err,
+      };
+   }
+}
+
+// Editar un gasto
+export const editarGastoPUT = async (id, gasto) => {
+   try {
+      const res = await axios.put(`${url}/api/gastos/editar/${id}`, gasto)
+      return res.data
+   } catch (err) {
+      return {
+         mensaje: "editGasto ERROR!",
+         error: err,
+      };
+   }
+}

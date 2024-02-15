@@ -4,6 +4,7 @@ import { AuthContext } from "./context/AuthContext";
 // Pages
 import Login from './pages/Login'
 import VerGastosContainer from './pages/VerGastosContainer'
+import EditarContainer from "./pages/EditarContainer";
 import Error404 from './pages/Error404'
 // Components
 import Layout from "./components/Layout";
@@ -34,6 +35,7 @@ function App() {
                <Route index element={<Login />} />
                <Route element={<Layout />}>
                   <Route path="/gastos/ver/:usuario" element={<VerGastosContainer />} />
+                  <Route path="/gastos/editar/:id" element={<EditarContainer />} />
                </Route>
                <Route path="*" element={<Error404 />} />
             </Routes>

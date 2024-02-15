@@ -1,5 +1,5 @@
 // Listado de rubros para el <select>
-export default [
+export const rubros = [
    "Arreglos",
    "Auto",
    "Bebe",

@@ -79,7 +79,7 @@ export const usarFiltros = (filtros, usuario) => {
 
    if (filtros.orden) {
       const orden = filtros.orden === 'desc' ? 'DESC' : 'ASC';
-      consultas.query += ` ORDER BY importe ${orden}`;
+      consultas.query += ` ORDER BY fechaGasto ${orden}`;
    }
 
    // if (filtros.tamanoPagina) {

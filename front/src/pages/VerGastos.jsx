@@ -1,52 +1,19 @@
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+
 import Loading from "../components/Loading.jsx"
 import TablaGastos from "../components/TablaGastos.jsx";
 import Filtros from "../components/Filtros";
-import { useEffect, useState } from "react";
-// API
-import { verGastos } from "../../api/calls.js"
-
-export default function VerGastos(props) {
 
 
+export default function VerGastos({
+   usuario,
+   datos,
+   setFiltros,
+   cambiarPagina,
+   cargando,
+   mensaje,
+}) {
 
-   const { usuario } = props
 
-   const [filtros, setFiltros] = useState({});
-   const [datos, setDatos] = useState({})
-   const [cargando, setCargando] = useState(false); 
-
-   let location = useLocation();
-   const navigate = useNavigate();
-
-   const cambiarPagina = async (params) => {
-
-      const searchParams = new URLSearchParams(location.search);
-      searchParams.set('paginaActual', params);
-      navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
-      
-      // const data = await verGastos(location.search, usuario);
-      // setDatos(data);
-   }
-
-   // ---
-   useEffect(() => {
-
-      // Check accounts at DB
-      const fetchData = async () => {
-         setCargando(true); // Iniciar carga
-         const filtros = location.search
-         const data = await verGastos(filtros, usuario);
-         setDatos(data);
-         setCargando(false); // Finalizar cargar verGastos
-      }
-      fetchData()
-
-   }, [filtros, location, location.search])
-
-   if (!usuario) {
-      return <Navigate to={`/`} />;
-   }
 
    return (
 
@@ -54,7 +21,7 @@ export default function VerGastos(props) {
          {
             
                <main className="bg-white pb-14">
-                  {datos.mensaje && <p class="leading-4 bg-green-300 p-5  text-black text-xl font-bold text-center animate-fadeOut"> {mensaje} </p> }
+                  {mensaje && <p class="leading-4 bg-green-300 p-5  text-black text-xl font-bold text-center animate-fadeOut"> {mensaje} </p> }
 
                   <Filtros onFiltrar={(nuevosFiltros) => setFiltros(nuevosFiltros)} />
 

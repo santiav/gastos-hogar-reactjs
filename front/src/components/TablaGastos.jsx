@@ -1,13 +1,19 @@
-import { useEffect, useState, useRef } from 'react'
+import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom';
+// componentes
 import Loading from "../components/Loading.jsx"
 import TablaGastosModal from './TablaGastosModal.jsx';
+// utils
+import { fechaTrim } from '../utils/utils.js'
+// Iconos
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 
-export default function TablaGastos({ usuario, datos, onCambiarPagina }) {
+export default function TablaGastos({ datos, onCambiarPagina }) {
 
-
+   const location = useLocation()
+   const actualPath = location.pathname + location.search
 
    const [showModal, setShowModal] = useState(false);
    const [productoSeleccionado, setProductoSeleccionado] = useState(null);
@@ -30,9 +36,9 @@ export default function TablaGastos({ usuario, datos, onCambiarPagina }) {
                         ?
                         <>
                         {datos.datos.map(gasto => (
-                           <div className="odd:bg-white even:bg-slate-200" key={gasto.id}>
+                           <div className="odd:bg-white even:bg-slate-100" key={gasto.id}>
                               <div className="gasto grid gap-x-1 md:gap-x-3 grid-cols-[60px_minmax(100px,_50%)_25%_25%] md:grid-cols-[60px_minmax(100px,_50%)_16.66%_16.66%_16.66%] py-[8px] grid-rows-[30px] ">
-                                 <div className="row-span-2 flex justify-center" data-id={`${gasto.id}`}
+                                 <div className="row-span-2 flex justify-center cursor-pointer " data-id={`${gasto.id}`}
                                     onClick={() => handleShowModal(gasto)}
 
                                  >
@@ -60,27 +66,26 @@ export default function TablaGastos({ usuario, datos, onCambiarPagina }) {
                                     {gasto.tipoPago}
                                  </span>
                                  <div className="p-1 text-center flex row-span-2">
-                                    <a href={`/api/gastos/${usuario}/editar/${gasto.id}`}
+                                    <Link to={`/gastos/editar/${gasto.id}`} state={actualPath}
                                        className=" p-2  bg-sky-500 hover:bg-sky-800 text-white w-1/2 flex justify-center items-center text-sm"
-                                       title="Editar"><FontAwesomeIcon icon={faPen} /></a>
-                                    <a href={`/api/gastos/${usuario}/borrar/${gasto.id}`}
+                                       title="Editar"><FontAwesomeIcon icon={faPen} /></Link>
+                                    <Link to={`/gastos/borrar/${gasto.id}`}
                                        className="p-2 bg-red-600 hover:bg-red-800 text-white w-1/2 flex justify-center items-center  text-sm"
-                                       title="Borrar"><FontAwesomeIcon icon={faTrashCan} /></a>
+                                       title="Borrar"><FontAwesomeIcon icon={faTrashCan} /></Link>
                                  </div>
                                  <span
                                     className="pb-1 text-slate-400 leading-none text-sm  text-ellipsis overflow-hidden whitespace-nowrap">
                                     {gasto.comentarios}
                                  </span>
                                  <span className="pb-1 text-center text-xs text-slate-400 ">
-                                    {/* fechaTrim(gasto.fechaGasto) */}
-                                    {gasto.fechaGasto}
+                                    {fechaTrim(gasto.fechaGasto)}
                                  </span>
 
                               </div>
 
                            </div>
                         ))}
-                           <div className='flex justify-center mb-3'>
+                           <div className='flex justify-center my-3'>
                              {/* Paginador */}
                               {datos.paginaActual > 1 && (
                                  <button onClick={() => onCambiarPagina(datos.paginaActual - 1)} className='px-3 hover:bg-orange-100 rounded-md underline hover:no-underline text-sky-500'>Anterior</button>

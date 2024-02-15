@@ -29,7 +29,7 @@ export const gastosVerModel = async (filtros, usuario) => {
    }
 }
 
-// Importe total gastosTotal (no hay vista)
+// Importe total gastosTotal (no hay vista) ✅
 export const gastosTotalModel = async (filtros, usuario) => {
    try {
       const resultado = usarFiltros(filtros, usuario)
@@ -40,6 +40,35 @@ export const gastosTotalModel = async (filtros, usuario) => {
 
       const [rows] = await pool.query(sql, resultado.values)
       return rows
+
+   } catch (error) {
+      throw Error(error)
+   }
+}
+
+// Vista del Gasto ✅
+export const gastosEditarGET_IDModel = async (id) => {
+
+   try {
+      const [rows] = await pool.query('SELECT * FROM gastos WHERE id = ?', [id]);
+      return rows[0];
+
+   } catch (error) {
+      throw Error(error)
+   }
+}
+
+// Actualización del gasto ✅
+export const gastosEditarPUT_IDModel = async (data, id) => {
+
+   try {
+
+      // Convert fechaGasto to MySQL-compatible format if it exists in data
+      if (data.fechaGasto) {
+         data.fechaGasto = new Date(data.fechaGasto).toISOString().slice(0, 19).replace('T', ' ');
+      }
+      const [rows] = await pool.query('UPDATE gastos SET ? WHERE id = ?', [data, id]);
+      return rows[0];
 
    } catch (error) {
       throw Error(error)

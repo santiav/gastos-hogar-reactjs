@@ -1,10 +1,11 @@
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
-
-
 import { AuthContext } from "../context/AuthContext.js";
-import rubros from '../utils/rubros';
+import { rubros } from '../utils/rubros';
+// Iconos
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretRight, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 export default function Filtros(props) {
 
@@ -45,14 +46,14 @@ export default function Filtros(props) {
          return (
             <>
                <strong className="mx-2 text-orange-500">Filtros aplicados </strong>
-               <div className="flex m-2 p-2 bg-slate-200 rounded">
-                  <ul className="px-2 grid grid-cols-2">
+               <div className="flex m-2 p-2 bg-slate-100 rounded-md">
+                  <ul className="px-2 grid grid-cols-2 gap-1">
                      {filtros.mes && <li>Mes: <span className="pill-1">{filtros.mes}</span></li>}
                      {filtros.item && <li>Buscar por: <span className="pill-1">{filtros.item}</span></li>}
                      {filtros.rubro && <li>Rubro: <span className="pill-1">{filtros.rubro}</span></li>}
                      {filtros.tipoPago && <li>Tipo de pago: <span className="pill-1">{filtros.tipoPago}</span></li>}
-                     {filtros.aporte === 1 && <li>Aporte: <span className="pill-1">Si</span></li>}
-                     {filtros.gastoFijo === 1 && <li>Gasto fijo: <span className="pill-1">Si</span></li>}
+                     {filtros.aporte == 1 && <li>Aporte: <span className="pill-1">Si</span></li>}
+                     {filtros.gastoFijo == 1 && <li>Gasto fijo: <span className="pill-1">Si</span></li>}
                      {filtros.costoMin && <li>Costo mínimo: <span className="pill-1">$ {filtros.costoMin}</span></li>}
                      {filtros.costoMax && <li>Costo máximo: <span className="pill-1">$ {filtros.costoMax}</span></li>}
                      {filtros.orden && <li>Orden: <span className="pill-1">{filtros.orden}</span></li>}
@@ -86,7 +87,9 @@ export default function Filtros(props) {
       <div className="container mx-auto">
          <aside>
            
-            <h2 className="mb-2  bg-orange-500 text-white p-2 px-4 cursor-pointer rounded-xl inline-block font-bold" onClick={() => setMostrar(true)}>Filtrar por...</h2>
+            <h2 className="mb-2  bg-orange-500 text-white p-2 px-4 cursor-pointer rounded-xl inline-block font-bold" onClick={() => setMostrar(!mostrar)}>
+               {mostrar == true ? <FontAwesomeIcon icon={faCaretDown} /> : <FontAwesomeIcon icon={faCaretRight} />}  Filtrar por...
+            </h2>
 
             <section id="filtros" className={`container m-auto md:px-4 px-2 shadow-lg ${mostrar ? 'block' : 'hidden'}`} >
                <form onSubmit={handleSubmit(handleFilters)}>

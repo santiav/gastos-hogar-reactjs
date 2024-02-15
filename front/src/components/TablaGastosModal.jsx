@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { fechaTrim, difFecha } from '../utils/utils.js'
 
 export default function TablaGastosModal({ gasto, closeModal, openModal }) {
 
@@ -33,7 +34,7 @@ export default function TablaGastosModal({ gasto, closeModal, openModal }) {
                roundingPriority: "morePrecision"
             }).format(gasto.importe)}
          </strong>
-         <small className="text-uppercase block mb-3">Hace {/*difFecha(gasto.fechaGasto)*/} días</small>
+         <small className="text-uppercase block mb-3">Hace {difFecha(gasto.fechaGasto)} días</small>
          <div className="flex">
             <div className="pr-2">
                <ul>
@@ -44,7 +45,7 @@ export default function TablaGastosModal({ gasto, closeModal, openModal }) {
                   <li>Aporte: <strong>{gasto.aporte == 1 ? "si" : "no"
                   }</strong>
                   </li>
-                  <li>Gasto Fijo: {gasto.gastoFijo == 1 ? "si" : "no"}</li>
+                  <li>Gasto Fijo: <strong>{gasto.gastoFijo == 1 ? "si" : "no"}</strong></li>
                </ul>
             </div>
             <div className="border-l border-black pl-2">
@@ -52,7 +53,7 @@ export default function TablaGastosModal({ gasto, closeModal, openModal }) {
                   <li>Tipo de pago: <strong>
                      {gasto.tipoPago}
                   </strong></li>
-                  <li>Fecha: {/* fechaTrim(gasto.fechaGasto) */}
+                  <li>Fecha: {fechaTrim(gasto.fechaGasto)}
                   </li>
                   <li>Año: {gasto.year}
                   </li>
