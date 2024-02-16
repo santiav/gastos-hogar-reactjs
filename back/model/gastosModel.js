@@ -14,9 +14,8 @@ export const loginGETModel = async () => {
 export const gastosVerModel = async (filtros, usuario) => {
 
    try {
-     
+
       const resultado = usarFiltros(filtros, usuario)
-      console.log("resultado", resultado)
       const [rows] = await pool.query(resultado.query, resultado.values)
       const [countResult] = await pool.query(resultado.count, resultado.values)
 
@@ -34,7 +33,6 @@ export const gastosTotalModel = async (filtros, usuario) => {
    try {
       const resultado = usarFiltros(filtros, usuario)
 
-      // console.log(resultado)
       let sql = "SELECT SUM(importe) FROM gastos WHERE usuario = ? AND moneda = 'pesos'"
       sql += resultado.whereClause
 
@@ -69,6 +67,61 @@ export const gastosEditarPUT_IDModel = async (data, id) => {
       }
       const [rows] = await pool.query('UPDATE gastos SET ? WHERE id = ?', [data, id]);
       return rows[0];
+
+   } catch (error) {
+      throw Error(error)
+   }
+}
+
+// Todos los gastos COMPARTIDOS (GET) ✅
+export const gastosCompartidosVerModel = async (filtros) => {
+
+   try {
+      const resultado = usarFiltros(filtros)
+      const [rows] = await pool.query(resultado.query, resultado.values)
+      const [countResult] = await pool.query(resultado.count, resultado.values)
+
+      const cantidadTotalProductos = countResult[0].total
+      return { datos: rows, cantidadTotalProductos }
+
+   } catch (error) {
+      throw Error(error)
+   }
+}
+
+// Importe total COMPARTIDOS (accion)
+export const gastosCompartidosTotalModel = async (filtros, usuarios) => {
+   try {
+      const resultado = usarFiltros(filtros)
+
+      let query = "SELECT SUM(importe) FROM gastos WHERE aporte = 1 AND moneda = 'pesos'"
+      query += resultado.whereClause
+
+
+      const calcularImporteUsuario = async (usuario) => {
+         let queryUser = `SELECT SUM(importe) FROM gastos WHERE usuario = '${usuario}' AND aporte = 1 AND moneda = 'pesos'`
+         queryUser += resultado.whereClause
+         const resQueryUser = await pool.query(queryUser, resultado.values)
+         return resQueryUser
+      }
+
+
+
+
+
+      let importesUsuarios = []
+      if (usuarios) {
+         for (const u of usuarios) {
+            const importe = await calcularImporteUsuario(u).then(ok => ok)
+            importesUsuarios.push({
+               usuario: u,
+               importe: importe[0][0]['SUM(importe)']
+            })
+         }
+      }
+
+      const [rows] = await pool.query(query, resultado.values)
+      return { rows, importesUsuarios }
 
    } catch (error) {
       throw Error(error)

@@ -21,6 +21,7 @@ export default function Filtros(props) {
    const { register, handleSubmit, setValue } = useForm(); // react-hook-form
    const navigate = useNavigate(); // para redireccionar
    const location = useLocation();
+   console.log(location)
 
 
 
@@ -49,6 +50,7 @@ export default function Filtros(props) {
                <div className="flex m-2 p-2 bg-slate-100 rounded-md">
                   <ul className="px-2 grid grid-cols-2 gap-1">
                      {filtros.mes && <li>Mes: <span className="pill-1">{filtros.mes}</span></li>}
+                     {filtros.ano && <li>Año: <span className="pill-1">{filtros.ano}</span></li>}
                      {filtros.item && <li>Buscar por: <span className="pill-1">{filtros.item}</span></li>}
                      {filtros.rubro && <li>Rubro: <span className="pill-1">{filtros.rubro}</span></li>}
                      {filtros.tipoPago && <li>Tipo de pago: <span className="pill-1">{filtros.tipoPago}</span></li>}
@@ -219,7 +221,7 @@ export default function Filtros(props) {
 
                   <div className="flex justify-end mt-3 pb-2">
                      <button type="submit" className="btn-primary-inverse flex-grow mx-1">Aplicar</button>
-                     <a href={`/gastos/ver/${usuario}`} className="btn-primary-inverse flex-grow text-center mx-1">Ver todos</a>
+                     <a href={`${location.pathname}`} className="btn-primary-inverse flex-grow text-center mx-1">Ver todos</a>
                   </div>
 
                </form>

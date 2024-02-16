@@ -1,13 +1,12 @@
 import { useEffect, useState, useContext } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.js";
-import VerGastos from './VerGastos.jsx';
+import GastosCompartidos from './GastosCompartidos.jsx';
 
 // API
-import { verGastos } from "../../api/calls.js"
+import { verGastosCompartidos } from "../../api/calls.js"
 
-export default function VerGastosContainer() {
-
+export default function GastosCompartidosContainer() {
    let { usuario } = useContext(AuthContext);
 
    const [filtros, setFiltros] = useState({});
@@ -21,17 +20,13 @@ export default function VerGastosContainer() {
    if (location.state == null) {
       mensaje = ''
    } else {
-      mensaje = location.state.mensaje 
+      mensaje = location.state.mensaje
    }
 
    const cambiarPagina = async (params) => {
-
       const searchParams = new URLSearchParams(location.search);
       searchParams.set('paginaActual', params);
       navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
-
-      // const data = await verGastos(location.search, usuario);
-      // setDatos(data);
    }
 
    // ---
@@ -41,7 +36,7 @@ export default function VerGastosContainer() {
       const fetchData = async () => {
          setCargando(true); // Iniciar carga
          const filtros = location.search
-         const data = await verGastos(filtros, usuario);
+         const data = await verGastosCompartidos(filtros);
          setDatos(data);
          setCargando(false); // Finalizar cargar verGastos
       }
@@ -49,19 +44,17 @@ export default function VerGastosContainer() {
 
    }, [filtros, location, location.search])
 
-   if (!usuario) {
-      return <Navigate to={`/`} />;
-   }
 
    return (
 
-      <VerGastos
+      <GastosCompartidos 
          usuario={usuario}
          setFiltros={setFiltros}
          datos={datos}
          cargando={cargando}
          cambiarPagina={cambiarPagina}
          mensaje={mensaje}
+      
       />
    )
 }

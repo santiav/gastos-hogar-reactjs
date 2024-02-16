@@ -34,6 +34,22 @@ export const verGastos = async (filtros, usuario) => {
    }
 }
 
+// Gastos Compartidos
+export const verGastosCompartidos = async (filtros) => {
+
+
+   try {
+      // Le debo pasar la ruta con los queries para que desde el backend pueda tomarlos con el objeto req.
+      const res = await axios.get(`${url}/api/gastos/compartidos/${filtros}`)
+      return res.data
+   } catch (err) {
+      return {
+         mensaje: "allGastos ERROR!",
+         error: err,
+      };
+   }
+}
+
 // Ver UN gasto
 export const editarGastoGET = async (id) => {
    try {

@@ -4,6 +4,7 @@ import { AuthContext } from "./context/AuthContext";
 // Pages
 import Login from './pages/Login'
 import VerGastosContainer from './pages/VerGastosContainer'
+import GastosCompartidosContainer from './pages/GastosCompartidosContainer'
 import EditarContainer from "./pages/EditarContainer";
 import Error404 from './pages/Error404'
 // Components
@@ -36,6 +37,7 @@ function App() {
                <Route element={<Layout />}>
                   <Route path="/gastos/ver/:usuario" element={<VerGastosContainer />} />
                   <Route path="/gastos/editar/:id" element={<EditarContainer />} />
+                  <Route path="/gastos/compartidos/" element={<GastosCompartidosContainer />} />
                </Route>
                <Route path="*" element={<Error404 />} />
             </Routes>

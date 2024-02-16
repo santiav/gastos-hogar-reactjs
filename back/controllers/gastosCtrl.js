@@ -1,5 +1,12 @@
-import { loginGETModel, gastosTotalModel, gastosVerModel, gastosEditarGET_IDModel,
-   gastosEditarPUT_IDModel} from "../model/gastosModel.js";
+import { 
+   loginGETModel, 
+   gastosTotalModel, 
+   gastosVerModel, 
+   gastosEditarGET_IDModel,
+   gastosEditarPUT_IDModel,
+   gastosCompartidosVerModel,
+   gastosCompartidosTotalModel
+} from "../model/gastosModel.js";
 
 
 export const loginGET = async (req, res) => {
@@ -74,8 +81,6 @@ export const gastosEditarPUT_ID = async (req, res) => {
    try {
       const id = req.params.id
       const data = req.body
-      console.log("id -->", id)
-      console.log("data -->", data)
 
       await gastosEditarPUT_IDModel(data, id)
       console.info("gasto actualizado!" + id)
@@ -83,5 +88,41 @@ export const gastosEditarPUT_ID = async (req, res) => {
    } catch (error) {
       console.error('Error updating MySQL:', error);
       throw error;
+   }
+}
+
+// Ver gastos compartidos - VISTA
+export const gastosCompartidosGET = async (req, res) => {
+
+   try {
+      let filtros = req.query
+      filtros.paginaActual = parseInt(req.query.paginaActual) || 1,
+      filtros.tamanoPagina = parseInt(req.query.tamanoPagina) || 10
+
+      // Cuentas de forma manual
+      let usuarios = ['santi', 'syl']
+
+       const totalGastado = await gastosCompartidosTotalModel(filtros, usuarios)
+
+       const { datos, cantidadTotalProductos } = await gastosCompartidosVerModel(filtros);
+
+      // Calcula la cantidad total de páginas
+      const totalPages = Math.ceil(cantidadTotalProductos / filtros.tamanoPagina)
+
+      
+       res.send({
+         datos,
+         filtros,
+         mensaje: req.query.mensaje || "",
+         totalGastado: totalGastado.rows[0]['SUM(importe)'],
+          importesUsuarios: totalGastado.importesUsuarios,
+         paginaActual: filtros.paginaActual, // 1
+         tamanoPagina: filtros.tamanoPagina, // 10
+         totalPages,
+         cantidadTotalProductos
+       })
+
+   } catch (error) {
+      throw new Error(error)
    }
 }
