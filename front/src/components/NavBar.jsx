@@ -33,9 +33,8 @@ export default function NavBar() {
                         Gasto</Link>
                   </li>
                   <li>
-                     <Link to={`/gastos/agregar/varios/${usuario}`}
-                        className="p-2  block nav-link text-slate-200 text-sm font-bold uppercase hover:bg-white hover:text-black  transition-all rounded-[3px] duration-300">Agregar
-                        Gastos</Link>
+                     <Link to={`/gastos/subircsv/${usuario}`}
+                        className="p-2  block nav-link text-slate-200 text-sm font-bold uppercase hover:bg-white hover:text-black  transition-all rounded-[3px] duration-300">Agregar Gastos</Link>
                   </li>
                   <li>
                      <Link className="p-2  block nav-link text-slate-200 text-sm font-bold uppercase hover:bg-white hover:text-black transition-all duration-300 rounded-[3px]"

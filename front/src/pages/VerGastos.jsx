@@ -11,6 +11,7 @@ export default function VerGastos({
    cambiarPagina,
    cargando,
    mensaje,
+   borrarGasto
 }) {
 
 
@@ -25,9 +26,13 @@ export default function VerGastos({
 
                   <Filtros onFiltrar={(nuevosFiltros) => setFiltros(nuevosFiltros)} />
 
-                  <strong className="text-5xl text-center  block">
-                     {datos.totalGastado != null ? new Intl.NumberFormat('es-AR', { roundingMode: 'trunc', style: 'currency', currency: 'ARS', roundingPriority: "morePrecision" }).format(datos.totalGastado) : "$ 0" }
-                  </strong>
+               
+                     <strong className="text-5xl text-center  block">
+                        {datos.totalGastado != null ? new Intl.NumberFormat('es-AR', { roundingMode: 'trunc', style: 'currency', currency: 'ARS', roundingPriority: "morePrecision" }).format(datos.totalGastado) : "$ 0"}
+                     </strong>
+
+                  
+                 
 
                   {/* Tabla */}
                   <div style={{ overflow: "scroll" }} className="bg-white rounded-[10px] mb-[50px] md:p-[20px] mt-5 pt-3 px-2">
@@ -47,7 +52,7 @@ export default function VerGastos({
                         {/* table-row-group */}                   
 
                        
-                     {cargando ? <div className='flex justify-center'><Loading /></div> : <TablaGastos usuario={usuario} datos={datos} onCambiarPagina={(paginaParams) => cambiarPagina(paginaParams)} /> }
+                     {cargando ? <div className='flex justify-center'><Loading /></div> : <TablaGastos usuario={usuario} datos={datos} borrarGasto={borrarGasto} onCambiarPagina={(paginaParams) => cambiarPagina(paginaParams)} /> }
 
                      </div>
 

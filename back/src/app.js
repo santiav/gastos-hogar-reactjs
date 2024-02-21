@@ -6,10 +6,8 @@ const app = express()
 
 // Middleware
 app.use(cors());
-
 // analizar JSON 
 app.use(express.json());
-
 // Analizar datos de formulario codificados en URL
 app.use(express.urlencoded({ extended: true }));
 

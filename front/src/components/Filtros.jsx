@@ -21,8 +21,6 @@ export default function Filtros(props) {
    const { register, handleSubmit, setValue } = useForm(); // react-hook-form
    const navigate = useNavigate(); // para redireccionar
    const location = useLocation();
-   console.log(location)
-
 
 
    const handleFilters = (data) => {

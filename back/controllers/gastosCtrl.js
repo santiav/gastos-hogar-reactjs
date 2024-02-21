@@ -1,3 +1,4 @@
+import csv from "csvtojson"
 import { 
    loginGETModel, 
    gastosTotalModel, 
@@ -5,7 +6,9 @@ import {
    gastosEditarGET_IDModel,
    gastosEditarPUT_IDModel,
    gastosCompartidosVerModel,
-   gastosCompartidosTotalModel
+   gastosCompartidosTotalModel,
+  gastosAgregarVariosPOSTModel,
+   borrarGastoModel
 } from "../model/gastosModel.js";
 
 
@@ -91,6 +94,14 @@ export const gastosEditarPUT_ID = async (req, res) => {
    }
 }
 
+// Borrar un gasto 
+export const borrarGasto = async (req, res) => {
+   let id = req.params.id
+   await borrarGastoModel(id)
+   res.send("Datos eliminados ID: " + id)
+   
+}
+
 // Ver gastos compartidos - VISTA
 export const gastosCompartidosGET = async (req, res) => {
 
@@ -124,5 +135,17 @@ export const gastosCompartidosGET = async (req, res) => {
 
    } catch (error) {
       throw new Error(error)
+   }
+}
+
+// Agregar CSV
+export const agregarCSVPOST = async (req, res) => {
+   try {
+      
+      let data = req.body
+      return await gastosAgregarVariosPOSTModel(data)
+   } catch (error) {
+      console.error('Error al procesar el archivo CSV:', error);
+      res.status(500).send('Error interno del servidor');
    }
 }

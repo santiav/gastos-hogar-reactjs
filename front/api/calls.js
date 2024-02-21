@@ -75,3 +75,28 @@ export const editarGastoPUT = async (id, gasto) => {
       };
    }
 }
+
+// Borrar gasto
+export const deleteGasto = async (id) => {
+   try {
+      await axios.delete(`${url}/api/gastos/borrar/${id}`)
+   } catch (err) {
+      return {
+         mensaje: "deleteGasto ERROR!",
+         error: err,
+      };
+   }
+}
+
+// Agregar varios gastos mediante un CSV
+export const agregarCSV = async (usuario, datos) => {
+   try {
+      const resultado = await axios.post(`${url}/api/gastos/subircsv/${usuario}`, datos)
+      return resultado.data
+   } catch (error) {
+      return {
+         mensaje: "Agregar CSV ERROR!",
+         error: error.message,
+      };
+   }
+}

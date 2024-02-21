@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 
-export default function TablaGastos({ datos, onCambiarPagina }) {
+export default function TablaGastos({ datos, onCambiarPagina, borrarGasto }) {
 
    const location = useLocation()
    const actualPath = location.pathname + location.search
@@ -35,58 +35,58 @@ export default function TablaGastos({ datos, onCambiarPagina }) {
                      datos.datos.length > 0
                         ?
                         <>
-                        {datos.datos.map(gasto => (
-                           <div className="odd:bg-white even:bg-slate-100" key={gasto.id}>
-                              <div className="gasto grid gap-x-1 md:gap-x-3 grid-cols-[60px_minmax(100px,_50%)_25%_25%] md:grid-cols-[60px_minmax(100px,_50%)_16.66%_16.66%_16.66%] py-[8px] grid-rows-[30px] ">
-                                 <div className="row-span-2 flex justify-center cursor-pointer " data-id={`${gasto.id}`}
-                                    onClick={() => handleShowModal(gasto)}
+                           {datos.datos.map(gasto => (
+                              <div className="odd:bg-white even:bg-slate-100" key={gasto.id}>
+                                 <div className="gasto grid gap-x-1 md:gap-x-3 grid-cols-[60px_minmax(100px,_50%)_25%_25%] md:grid-cols-[60px_minmax(100px,_50%)_16.66%_16.66%_16.66%] py-[8px] grid-rows-[30px] ">
+                                    <div className="row-span-2 flex justify-center cursor-pointer " data-id={`${gasto.id}`}
+                                       onClick={() => handleShowModal(gasto)}
 
-                                 >
+                                    >
 
-                                    <span className="text-center self-center">
-                                       <img src={`/icons/rubros/${gasto.rubro}.png`}
-                                          className="w-12 block mx-auto" title={gasto.rubro} />
+                                       <span className="text-center self-center">
+                                          <img src={`/icons/rubros/${gasto.rubro}.png`}
+                                             className="w-12 block mx-auto" title={gasto.rubro} />
+                                       </span>
+
+
+                                    </div>
+                                    <span
+                                       className="leading-6 self-end text-lg text-ellipsis overflow-hidden whitespace-nowrap">
+                                       {gasto.item}
+                                    </span>
+                                    <span className="pt-1 text-center self-end text-lg ">{
+                                       gasto.moneda == "dolares" ? `u$s ${gasto.importe}` : `${new
+                                          Intl.NumberFormat('es-AR', {
+                                             roundingMode: 'trunc',
+                                             style: 'currency', currency: 'ARS',
+                                             roundingPriority: "morePrecision"
+                                          }).format(gasto.importe)}`
+                                    }</span>
+                                    <span className="pt-1 text-center self-end capitalize hidden sm:block">
+                                       {gasto.tipoPago}
+                                    </span>
+                                    <div className="p-1 text-center flex row-span-2">
+                                       <Link to={`/gastos/editar/${gasto.id}`} state={actualPath}
+                                          className=" p-2  bg-sky-500 hover:bg-sky-800 text-white w-1/2 flex justify-center items-center text-sm"
+                                          title="Editar"><FontAwesomeIcon icon={faPen} /></Link>
+                                       <button onClick={() => borrarGasto(gasto.id)}
+                                          className="p-2 bg-red-600 hover:bg-red-800 text-white w-1/2 flex justify-center items-center  text-sm"
+                                          title="Borrar"><FontAwesomeIcon icon={faTrashCan} /></button>
+                                    </div>
+                                    <span
+                                       className="pb-1 text-slate-400 leading-none text-sm  text-ellipsis overflow-hidden whitespace-nowrap">
+                                       {gasto.comentarios}
+                                    </span>
+                                    <span className="pb-1 text-center text-xs text-slate-400 ">
+                                       {fechaTrim(gasto.fechaGasto)}
                                     </span>
 
-
                                  </div>
-                                 <span
-                                    className="leading-6 self-end text-lg text-ellipsis overflow-hidden whitespace-nowrap">
-                                    {gasto.item}
-                                 </span>
-                                 <span className="pt-1 text-center self-end text-lg ">{
-                                    gasto.moneda == "dolares" ? `u$s ${gasto.importe}` : `${new
-                                       Intl.NumberFormat('es-AR', {
-                                          roundingMode: 'trunc',
-                                          style: 'currency', currency: 'ARS',
-                                          roundingPriority: "morePrecision"
-                                       }).format(gasto.importe)}`
-                                 }</span>
-                                 <span className="pt-1 text-center self-end capitalize hidden sm:block">
-                                    {gasto.tipoPago}
-                                 </span>
-                                 <div className="p-1 text-center flex row-span-2">
-                                    <Link to={`/gastos/editar/${gasto.id}`} state={actualPath}
-                                       className=" p-2  bg-sky-500 hover:bg-sky-800 text-white w-1/2 flex justify-center items-center text-sm"
-                                       title="Editar"><FontAwesomeIcon icon={faPen} /></Link>
-                                    <Link to={`/gastos/borrar/${gasto.id}`}
-                                       className="p-2 bg-red-600 hover:bg-red-800 text-white w-1/2 flex justify-center items-center  text-sm"
-                                       title="Borrar"><FontAwesomeIcon icon={faTrashCan} /></Link>
-                                 </div>
-                                 <span
-                                    className="pb-1 text-slate-400 leading-none text-sm  text-ellipsis overflow-hidden whitespace-nowrap">
-                                    {gasto.comentarios}
-                                 </span>
-                                 <span className="pb-1 text-center text-xs text-slate-400 ">
-                                    {fechaTrim(gasto.fechaGasto)}
-                                 </span>
 
                               </div>
-
-                           </div>
-                        ))}
+                           ))}
                            <div className='flex justify-center my-3'>
-                             {/* Paginador */}
+                              {/* Paginador */}
                               {datos.paginaActual > 1 && (
                                  <button onClick={() => onCambiarPagina(datos.paginaActual - 1)} className='px-3 hover:bg-orange-100 rounded-md underline hover:no-underline text-sky-500'>Anterior</button>
                               )}

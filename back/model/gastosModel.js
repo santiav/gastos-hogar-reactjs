@@ -127,3 +127,35 @@ export const gastosCompartidosTotalModel = async (filtros, usuarios) => {
       throw Error(error)
    }
 }
+
+// Agregar gasto (POST) gastosAgregarVariosPOSTModel()
+export const gastosAgregarVariosPOSTModel = async (data) => {
+
+   try {
+
+
+      for (let i = 0;i < data.length; i++) {
+
+         let gastoPreparado = data[i].split(",")
+         gastoPreparado = [null, ...gastoPreparado]
+         await pool.query("INSERT INTO gastos (`id`, `item`, `rubro`, `moneda`, `importe`, `aporte`, `gastoFijo`, `tipoPago`, `fechaGasto`, `year`, `imgTicket`, `comentarios`, `usuario`) VALUES (?)", [gastoPreparado])
+
+      }
+
+
+   } catch (error) {
+      throw Error(error)
+   }
+}
+
+// Borrar gasto
+export const borrarGastoModel = async (id) => {
+
+   try {
+
+      await pool.query("DELETE FROM gastos WHERE id = ?", [id])
+   } catch (error) {
+      throw Error(error)
+   }
+
+}
