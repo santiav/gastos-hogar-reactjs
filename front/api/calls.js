@@ -1,7 +1,7 @@
 import axios from "axios";
 
 let port = 3000
-let url = `http://localhost:${port}`
+let url = `http://localhost:${port}` || 'https://ray-button.cyclic.app'
 
 // Obtener los usuarios - GET
 export const getCuentas = async () => {
