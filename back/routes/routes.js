@@ -9,10 +9,11 @@ import {
    gastosEditarPUT_ID,
    gastosCompartidosGET,
    agregarCSVPOST,
-   borrarGasto
+   borrarGasto,
+   addGastoPOST
  } 
 from '../controllers/gastosCtrl.js';
-import { gastosAgregarVariosPOSTModel } from "../model/gastosModel.js"
+
 
 // Configuración de Multer para el almacenamiento de archivos
 const storage = multer.memoryStorage()
@@ -28,6 +29,9 @@ router.get("/gastos/ver/:usuario", verGastosGET)
 // VER un gasto
 router.get("/gastos/editar/:id", gastosEditarGET_ID)
 
+// Agregar gasto 
+router.post("/gastos/agregar", addGastoPOST)
+
 // MODIFICAR un Gasto
 router.put("/gastos/editar/:id", gastosEditarPUT_ID)
 
@@ -40,16 +44,6 @@ router.get("/gastos/compartidos", gastosCompartidosGET)
 
 
 // subir varios gastos mediante CSV
-router.post("/gastos/subircsv/:usuario", async (req, res) => {
-   try {
-
-      let data = req.body
-      await gastosAgregarVariosPOSTModel(data)
-      res.send("Gastos registrados")
-   } catch (error) {
-      console.error('Error al procesar el archivo CSV:', error);
-      res.status(500).send('Error interno del servidor');
-   }
-})
+router.post("/gastos/subircsv/:usuario", agregarCSVPOST)
 
 export default router

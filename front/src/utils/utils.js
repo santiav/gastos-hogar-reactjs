@@ -45,3 +45,11 @@ export const chequeado = function (valorBinario) {
    }
 
 }
+
+// 
+export const fechaLocale = function (local) {
+   const format = (date, locale, options) => new Intl.DateTimeFormat(locale, options).format(date)
+   const now = new Date()
+   const fechaFinal = format(now, local, { month: '2-digit', year: 'numeric', day: '2-digit'}).replaceAll("/", "-")
+   return fechaFinal
+} 

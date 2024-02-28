@@ -92,6 +92,7 @@ export const gastosCompartidosVerModel = async (filtros) => {
 // Importe total COMPARTIDOS (accion)
 export const gastosCompartidosTotalModel = async (filtros, usuarios) => {
    try {
+      
       const resultado = usarFiltros(filtros)
 
       let query = "SELECT SUM(importe) FROM gastos WHERE aporte = 1 AND moneda = 'pesos'"
@@ -111,10 +112,10 @@ export const gastosCompartidosTotalModel = async (filtros, usuarios) => {
 
       let importesUsuarios = []
       if (usuarios) {
-         for (const u of usuarios) {
-            const importe = await calcularImporteUsuario(u).then(ok => ok)
+         for (const u in usuarios) {
+            const importe = await calcularImporteUsuario(usuarios[u].usuario).then(ok => ok)
             importesUsuarios.push({
-               usuario: u,
+               usuario: usuarios[u].usuario,
                importe: importe[0][0]['SUM(importe)']
             })
          }
@@ -128,13 +129,24 @@ export const gastosCompartidosTotalModel = async (filtros, usuarios) => {
    }
 }
 
-// Agregar gasto (POST) gastosAgregarVariosPOSTModel()
+export const addGastoModel = async (data) => {
+   try {
+      const [rows] = await pool.query("INSERT INTO gastos SET ?", [data])
+      return rows
+   } catch (error) {
+      throw Error(error)
+   }
+}
+
+
+
+// Agregar varios gastos (POST) gastosAgregarVariosPOSTModel()
 export const gastosAgregarVariosPOSTModel = async (data) => {
 
    try {
 
 
-      for (let i = 0;i < data.length; i++) {
+      for (let i = 0; i < data.length; i++) {
 
          let gastoPreparado = data[i].split(",")
          gastoPreparado = [null, ...gastoPreparado]

@@ -10,6 +10,7 @@ import AgregarVariosGastos from './pages/AgregarVariosGastos';
 import Error404 from './pages/Error404'
 // Components
 import Layout from "./components/Layout";
+import AgregarGasto from "./pages/AgregarGasto";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Routes>
                <Route index element={<Login />} />
                <Route element={<Layout />}>
+                  <Route path="/gastos/agregar/:usuario" element={<AgregarGasto />} />
                   <Route path="/gastos/ver/:usuario" element={<VerGastosContainer />} />
                   <Route path="/gastos/editar/:id" element={<EditarContainer />} />
                   <Route path="/gastos/compartidos/" element={<GastosCompartidosContainer />} />

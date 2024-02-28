@@ -63,6 +63,18 @@ export const editarGastoGET = async (id) => {
    }
 }
 
+export const addGastoPOST = async (gasto) => {
+   try {
+      const res = await axios.post(`${url}/api/gastos/agregar`, gasto)
+      return res.data
+   } catch (err) {
+      return {
+         mensaje: "addGasto ERROR!",
+         error: err,
+      };
+   }
+}
+
 // Editar un gasto
 export const editarGastoPUT = async (id, gasto) => {
    try {

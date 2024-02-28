@@ -1,4 +1,3 @@
-import csv from "csvtojson"
 import { 
    loginGETModel, 
    gastosTotalModel, 
@@ -8,13 +7,14 @@ import {
    gastosCompartidosVerModel,
    gastosCompartidosTotalModel,
   gastosAgregarVariosPOSTModel,
-   borrarGastoModel
+   borrarGastoModel,
+   addGastoModel,
 } from "../model/gastosModel.js";
 
 
 export const loginGET = async (req, res) => {
    try {
-      res.send(await loginGETModel())
+      return await loginGETModel()
    } catch (err) {
       return res.status(500).json({ message: "Algo salió mal " + err });
    }
@@ -78,6 +78,16 @@ export const gastosEditarGET_ID = async (req, res) => {
    }
 }
 
+export const addGastoPOST = async (req, res) => {
+
+   let data = req.body
+   console.log(data)
+   let result = await addGastoModel(data)
+   // console.info("datos agregados!" + data)
+   return result
+
+}
+
 // Editar un gasto (POST)
 export const gastosEditarPUT_ID = async (req, res) => {
 
@@ -110,10 +120,11 @@ export const gastosCompartidosGET = async (req, res) => {
       filtros.paginaActual = parseInt(req.query.paginaActual) || 1,
       filtros.tamanoPagina = parseInt(req.query.tamanoPagina) || 10
 
-      // Cuentas de forma manual
-      let usuarios = ['santi', 'syl']
+      // Cuentas
+      let usuarios = await loginGET()
 
        const totalGastado = await gastosCompartidosTotalModel(filtros, usuarios)
+      console.log("totalGastado", totalGastado)
 
        const { datos, cantidadTotalProductos } = await gastosCompartidosVerModel(filtros);
 
@@ -141,9 +152,10 @@ export const gastosCompartidosGET = async (req, res) => {
 // Agregar CSV
 export const agregarCSVPOST = async (req, res) => {
    try {
-      
+
       let data = req.body
-      return await gastosAgregarVariosPOSTModel(data)
+      await gastosAgregarVariosPOSTModel(data)
+      res.send("Gastos registrados")
    } catch (error) {
       console.error('Error al procesar el archivo CSV:', error);
       res.status(500).send('Error interno del servidor');

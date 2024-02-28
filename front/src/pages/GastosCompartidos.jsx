@@ -23,35 +23,39 @@ export default function GastosCompartidos({
                <Filtros onFiltrar={(nuevosFiltros) => setFiltros(nuevosFiltros)} />
 
                <h1 className="text-center font-bold  text-2xl">Gastos compartidos</h1>
-               
+
                <strong className="text-5xl text-center  block">
                   {datos.totalGastado != null ? new Intl.NumberFormat('es-AR', { roundingMode: 'trunc', style: 'currency', currency: 'ARS', roundingPriority: "morePrecision" }).format(datos.totalGastado) : "$ 0"}
                </strong>
                <p className="text-center text-xl mb-3 leading-5 mx-4 text-slate-500">Aportes al hogar<br /> (ej: comida (porque la consumen ambos), etc)</p>
-               <div className="grid grid-cols-2 text-2xl text-center m-4 ">
+               <div className='container mx-auto'>
                   {datos.importesUsuarios === undefined ? (
-                     <Loading />
+                    <div className="flex justify-center"> <Loading /></div>
                   ) : (
-                     datos.importesUsuarios.map((obj, i) => (
-                        <div key={i} className="mx-2 bg-slate-200 p-2 rounded"> 
-                           {obj.usuario}<br />
-                           <strong>
-                              {new Intl.NumberFormat('es-AR', {
-                                 roundingMode: 'trunc',
-                                 style: 'currency',
-                                 currency: 'ARS',
-                                 roundingPriority: "morePrecision"
-                              }).format(obj.importe)}
-                           </strong>
-                        </div>
-                     ))
+                     <div className="grid grid-cols-2 text-2xl text-center m-4 ">
+                        {datos.importesUsuarios.map((obj, i) => (
+                           <div key={i} className="mx-2 bg-slate-200 p-2 rounded">
+                              {obj.usuario}<br />
+                              <strong>
+                                 {new Intl.NumberFormat('es-AR', {
+                                    roundingMode: 'trunc',
+                                    style: 'currency',
+                                    currency: 'ARS',
+                                    roundingPriority: "morePrecision"
+                                 }).format(obj.importe)}
+                              </strong>
+                           </div>
+                        ))}
+                     </div>
                   )}
+               
                </div>
-              
+             
+
 
                {/* Tabla */}
                <div style={{ overflow: "scroll" }} className="bg-white rounded-[10px] mb-[50px] md:p-[20px] mt-5 pt-3 px-2">
-                  
+
 
                   <div className="table w-full">
 
