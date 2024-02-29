@@ -1,12 +1,16 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from "../context/AuthContext.js";
 import { Link } from 'react-router-dom';
+// Iconos
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {  faBars } from '@fortawesome/free-solid-svg-icons'
 
 export default function NavBar() {
 
 
    let { usuario } = useContext(AuthContext);
-  // const usuario = "test"
+
+   const [navbarOpen, setNavbarOpen] = useState(false);
 
    return (
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-sky-500 mb-3">
@@ -19,12 +23,17 @@ export default function NavBar() {
                <p className="text-white font-bold mr-auto block lg:hidden self-center">¡Hola {usuario}!</p>
                <button
                   className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none menu"
-                  type="button">
-                  <i className="fas fa-bars"></i>
+                  type="button"
+                  onClick={() => setNavbarOpen(!navbarOpen)}
+               >
+                  <FontAwesomeIcon icon={faBars} />
                </button>
             </div>
 
-            <div className="lg:flex flex-grow items-center hidden" id="example-navbar-danger">
+            <div className={
+               "lg:flex flex-grow items-center" +
+               (navbarOpen ? " flex" : " hidden")
+            }>
 
                <ul className="flex flex-col lg:flex-row w-full items-end lg:w-auto list-none lg:ml-auto">
                   <li>
