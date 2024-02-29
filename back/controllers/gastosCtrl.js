@@ -22,6 +22,14 @@ export const loginGET = async (req, res) => {
 
 }
 
+export const getCuentas = async (req, res) => {
+   try {
+      await loginGETModel()
+   } catch (err) {
+      return res.status(500).json({ message: "Algo salió mal " + err });
+   }
+}
+
 export const verGastosGET = async (req, res) => {
 
 
@@ -122,10 +130,9 @@ export const gastosCompartidosGET = async (req, res) => {
       filtros.tamanoPagina = parseInt(req.query.tamanoPagina) || 10
 
       // Cuentas
-      let usuarios = await loginGET()
+      let usuarios = await getCuentas()
 
        const totalGastado = await gastosCompartidosTotalModel(filtros, usuarios)
-      console.log("totalGastado", totalGastado)
 
        const { datos, cantidadTotalProductos } = await gastosCompartidosVerModel(filtros);
 
