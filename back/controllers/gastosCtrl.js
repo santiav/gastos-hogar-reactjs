@@ -14,7 +14,8 @@ import {
 
 export const loginGET = async (req, res) => {
    try {
-      return await loginGETModel()
+      const respuesta = await loginGETModel()
+      res.send(respuesta)
    } catch (err) {
       return res.status(500).json({ message: "Algo salió mal " + err });
    }
