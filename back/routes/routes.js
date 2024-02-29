@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import multer from 'multer'
 const router = Router();
 
 import { 
@@ -14,11 +13,6 @@ import {
  } 
 from '../controllers/gastosCtrl.js';
 
-
-// Configuración de Multer para el almacenamiento de archivos
-const storage = multer.memoryStorage()
-
-const upload = multer({ storage: storage });
 
 // Login
 router.get("/", loginGET)
@@ -40,8 +34,6 @@ router.delete("/gastos/borrar/:id", borrarGasto)
 
 // Ver gastos compartidos
 router.get("/gastos/compartidos", gastosCompartidosGET)
-
-
 
 // subir varios gastos mediante CSV
 router.post("/gastos/subircsv/:usuario", agregarCSVPOST)
