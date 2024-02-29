@@ -6,7 +6,7 @@ const app = express()
 
 // Configurar las opciones de CORS
 const corsOptions = {
-   origin: 'https://exquisite-banoffee-8c66ce.netlify.app/',
+   origin: 'exquisite-banoffee-8c66ce.netlify.app/',
    methods: ['GET', 'POST', 'PUT', 'DELETE'],
    allowedHeaders: ['Content-Type', 'Authorization'], 
 };
